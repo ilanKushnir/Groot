@@ -4,7 +4,7 @@ from flask import Flask, render_template, url_for, flash, redirect
 from forms import RegistrationForm, LoginForm
 
 app = Flask(__name__)
-# app.config['SECRET_KEY'] = '202117b1b3ef94dbcd7ddb9e2dea2705'
+app.config['SECRET_KEY'] = '202117b1b3ef94dbcd7ddb9e2dea2705'
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 # db = SQLAlchemy(app)
 
@@ -51,15 +51,25 @@ posts = [
 
 
 @app.route('/')
+@app.route('/home')
+def home():
+    return f"<h1>Hello</h1>"
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+    print(form.email)
+    print(form.password)
     if form.validate_on_submit():
+        print("entered0")
         if form.email.data == 'admin@blog.com' and form.password.data == 'password':
             flash('You have been logged in!', 'success')
+            print("entered1")
             return redirect(url_for('home'))
         else:
             flash('Login unsuccessful. Please check username and password', 'danger')
+            print("entered2")
     return render_template('login.html', title='Login', form=form)
 
 
